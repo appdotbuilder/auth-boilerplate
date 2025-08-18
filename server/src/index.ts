@@ -32,6 +32,8 @@ import { adminGetUser } from './handlers/admin_get_user';
 import { adminCreateUser } from './handlers/admin_create_user';
 import { adminUpdateUser } from './handlers/admin_update_user';
 import { adminDeleteUser } from './handlers/admin_delete_user';
+import { createAdminUser } from './handlers/create_admin_user';
+import { setupDatabase } from './handlers/setup_database';
 
 const t = initTRPC.create({
   transformer: superjson,
@@ -76,6 +78,14 @@ const appRouter = router({
   healthcheck: publicProcedure.query(() => {
     return { status: 'ok', timestamp: new Date().toISOString() };
   }),
+
+  // Initialize admin user (for development/setup)
+  initializeAdmin: publicProcedure
+    .mutation(() => createAdminUser()),
+
+  // Setup database with admin user (for development)
+  setupDatabase: publicProcedure
+    .mutation(() => setupDatabase()),
 
   // Authentication routes
   register: publicProcedure
