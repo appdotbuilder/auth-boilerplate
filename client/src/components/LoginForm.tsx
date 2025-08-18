@@ -42,6 +42,23 @@ export function LoginForm({
     }
   };
 
+  const handleAdminLogin = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      await login({
+        email: 'admin@example.com',
+        password: 'adminpassword123'
+      });
+      // Navigation will be handled by App component based on auth state
+    } catch (err: any) {
+      setError(err.message || 'Admin login failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center p-4">
       <div className="w-full max-w-md">
@@ -118,6 +135,15 @@ export function LoginForm({
                 {isLoading ? 'Signing in...' : 'Sign In'}
               </Button>
             </form>
+
+            <Button 
+              variant="outline" 
+              className="w-full mt-4" 
+              disabled={isLoading}
+              onClick={handleAdminLogin}
+            >
+              Login as Admin
+            </Button>
 
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
